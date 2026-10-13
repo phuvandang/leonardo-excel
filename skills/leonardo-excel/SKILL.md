@@ -39,6 +39,7 @@ Nguyên lý: không đụng vào sheet gốc. Dựng sheet trình bày mới, m�
      --sheet "Tên sheet nguồn::NN Tên mới::TIÊU ĐỀ BÁO CÁO — TÊN PHẦN::Tháng MM năm YYYY" \
      --sheet "…" --period "Từ 01/MM/YYYY đến DD/MM/YYYY" [--unit "đồng"] [--report-date "…"]
    ```
+   Với bảng dạng danh sách (nhân viên, khách hàng, mã hàng): thêm `--label-col C --code-col B --code-title "Mã nhân viên"` để cột tên làm cột nội dung và mã có sẵn trong file gốc thay cho mã tự đánh số.
    Đọc dòng "BỎ QUA" trong kết quả: đó là các dòng nguồn không đưa vào bản trình bày; phải báo lại cho người dùng.
 3. Ghép vào file gốc, ra file mới: `$PY -I scripts/restyle_merge.py goc.xlsx W.xlsx ket-qua.xlsx`
 4. Kiểm tra (bắt buộc): `$PY -I scripts/verify.py goc.xlsx ket-qua.xlsx`. Chỉ giao file khi dòng cuối là `KẾT LUẬN: ĐẠT`.

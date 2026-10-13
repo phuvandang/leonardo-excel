@@ -22,10 +22,14 @@ ap.add_argument('--sheet', action='append', required=True, help='"Tên sheet ngu
 ap.add_argument('--unit'); ap.add_argument('--period'); ap.add_argument('--report-date')
 ap.add_argument('--label-width', type=float, default=44); ap.add_argument('--value-width', type=float, default=18.5)
 ap.add_argument('--no-info', action='store_true', help='bỏ khối thông tin công ty')
+ap.add_argument('--label-col', help='chữ cột nguồn dùng làm cột nội dung (mặc định: tự nhận). Ví dụ C cho cột Họ tên')
+ap.add_argument('--code-col', help='chữ cột nguồn đưa vào cột mã (ví dụ B cho mã nhân viên); mặc định mã tự đánh số')
+ap.add_argument('--code-title', default='Mã chỉ tiêu', help='tiêu đề cột mã')
 A = ap.parse_args()
 S = openpyxl.load_workbook(A.src, read_only=True, data_only=True)
 clean = lambda t: ' '.join(str(t).split()) if isinstance(t, str) else t
 isnum = lambda v: isinstance(v, (int, float)) and not isinstance(v, bool)
+col_index = lambda L: openpyxl.utils.column_index_from_string(L.upper())
 isdate = lambda v: isinstance(v, (datetime.datetime, datetime.date, datetime.time))
 
 
@@ -68,19 +72,20 @@ def regions(rows):
 
 
 def label_col(rows, cols):
+    if A.label_col and col_index(A.label_col) in cols: return col_index(A.label_col)
     cnt = {c: sum(1 for d in rows.values() if c in d and isinstance(d[c][0], str)) for c in cols[:2]}
     return max(cols[:2], key=lambda c: (cnt[c], -c))
 
 
 def render(sh, name, rows, cols, skipped):
     q = "'" + name.replace("'", "''") + "'"
-    lab = label_col(rows, cols); idx = cols[0] if lab != cols[0] else None
+    lab = label_col(rows, cols); before = [c for c in cols if c < lab]; cc = col_index(A.code_col) if A.code_col else None
     vcols = [c for c in cols if c > lab]; items = []
     for rn in sorted(rows):
         d = {c: rows[rn][c] for c in cols if c in rows[rn]}
         if not d: continue
-        strs = [c for c in d if isinstance(d[c][0], str)]; nums = [c for c in d if isnum(d[c][0]) and c != idx]; dates = [c for c in d if isdate(d[c][0])]
-        lc = lab if lab in d and isinstance(d[lab][0], str) else (idx if idx in d and isinstance(d[idx][0], str) else None)
+        strs = [c for c in d if isinstance(d[c][0], str)]; nums = [c for c in d if isnum(d[c][0]) and c not in before]; dates = [c for c in d if isdate(d[c][0])]
+        lc = lab if lab in d and isinstance(d[lab][0], str) else next((c for c in before if c in d and isinstance(d[c][0], str) and c != cc), None)
         bold = any(d[c][1] for c in ([lc] if lc else list(d)[:1])); filled = bool(lc and d[lc][2])
         if not nums and (len(strs) + len(dates) >= 3 or (len(strs) == 2 and lc and d[lc][1])): cls = 'HEAD'
         elif not nums and not dates and len(strs) == 1 and lc and len(d) == 1: cls = 'TEXT1'
@@ -100,6 +105,13 @@ def render(sh, name, rows, cols, skipped):
         if cur is not None and it['cls'] in ('HEAD', 'DATA'):
             cur['ext'] = max(cur['ext'], max([vcols.index(c) + 1 for c in it['d'] if c in vcols] or [0]))
             if it['cls'] == 'DATA' and it['nums']: cur['hasnum'] = True
+    blocks = []                              # bảng danh sách mà đa số dòng đều in đậm/tô nền: chỉ coi dòng có nhãn nằm ở cột phía trước là dòng tổng
+    for it in items:
+        if it['cls'] == 'HEAD': blocks.append([])
+        elif it['cls'] == 'DATA' and blocks: blocks[-1].append(it)
+    for blk in blocks:
+        if blk and sum(1 for it in blk if it['bold'] or it['filled']) > len(blk) / 2:
+            for it in blk: it['bold'] = it['filled'] = bool(it['lc'] and it['lc'] != lab)
     in_table = False; title = None; notes = []; gi = ii = 0; textblock = False
     for it in items:
         d, rn, cls = it['d'], it['rn'], it['cls']
@@ -111,8 +123,9 @@ def render(sh, name, rows, cols, skipped):
             textblock = it['ext'] == 1 and not it.get('hasnum')
             sh.block(title or hl, ncols=(min(sh.n, 9) - 3) if textblock else it['ext'])
             for t in notes: sh.note(t)
-            sh.header(['STT', hl, 'Mã chỉ tiêu'] + [hdr_text(d[c][0]) if c in d else None for c in vcols], merge_from=4 if textblock else None)
+            sh.header(['STT', hl, A.code_title] + [hdr_text(d[c][0]) if c in d else None for c in vcols], merge_from=4 if textblock else None)
             in_table = True; title = None; notes = []; gi = ii = 0; continue
+        if not in_table and cls == 'TEXT1': title = first_txt; continue
         if not in_table:
             skipped.append((name, rn, [(CL(c), str(d[c][0])[:30]) for c in sorted(d)][:6])); continue
         label = clean(d[it['lc']][0]) if it['lc'] else None
@@ -128,7 +141,8 @@ def render(sh, name, rows, cols, skipped):
         if it['bold'] or it['filled']: stt = rom(gi); gi += 1; ii = 0; kind = 'group'
         elif label is None and merge: stt = ''; kind = 'item'
         else: ii += 1; stt = ii; kind = 'item'
-        sh.row(stt, label if label is not None else ('' if merge else '(không có tên trong bản gốc)'), vals, kind, merge_text=merge)
+        code = (d[cc][0], f'{q}!{CL(cc)}{rn}') if cc and cc in d and cc != it['lc'] else (not cc)
+        sh.row(stt, label if label is not None else ('' if merge else '(không có tên trong bản gốc)'), vals, kind, merge_text=merge, code=code)
 
 
 wb = Workbook(); wb.remove(wb.active); skipped = []; VAL = {}; meta = dict(sources=[], new=[]); summary = []

@@ -105,13 +105,16 @@ class Sheet:
     def row(self, stt, label, vals=(), kind='item', merge_text=False, code=True):
         """Một dòng bảng. kind: item | group (đậm, nền nhạt) | sub (dòng tên nhóm, không mã).
 
+        code: True = mã tự đánh số; False = để trống; (giá trị, ô nguồn) = lấy mã từ file gốc.
         vals: danh sách (giá trị, định dạng, ô nguồn). Có ô nguồn thì ô là công thức '=nguồn' và giá trị được ghi vào self.links
         để gắn làm giá trị đã tính khi ghép file. Giá trị là chuỗi bắt đầu bằng '=' được ghi làm công thức.
         Định dạng: None (chữ), 'input' (ô nhập nền vàng), 'status' (chữ đậm canh giữa) hoặc mã định dạng số.
         """
         r = self.r; bold = kind in ('group', 'sub'); fl = P['group'] if bold else None; f = F(bold=bold)
         c = None
-        if kind != 'sub' and code: self.code += 1; c = f'{self.prefix}{self.code:03d}'
+        if isinstance(code, tuple):          # mã lấy từ ô nguồn (ví dụ mã nhân viên): (giá trị, ô nguồn)
+            c = '=' + code[1]; self.links[f'C{r}'] = code[0]
+        elif kind != 'sub' and code: self.code += 1; c = f'{self.prefix}{self.code:03d}'
         self.put(f'A{r}', stt, f, Cn, fl=fl, box=True); self.put(f'B{r}', label, f, Lf, fl=fl, box=True); self.put(f'C{r}', c, f, Cn, fl=fl, box=True)
         n = nlines(label or '', self.widths[1])
         for i in range(4, self.limit + 1):
