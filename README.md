@@ -48,7 +48,7 @@ skills/leonardo-excel/
   config.json     thông tin công ty
   assets/         logo
   scripts/        leo_style.py (thư viện chuẩn), new_report.py, restyle_build.py, restyle_merge.py, verify.py, preview.py
-examples/vi-du.json   bản mô tả mẫu cho luồng tạo mới (số giả)
+  examples/       vi-du.json: bản mô tả mẫu cho luồng tạo mới (số giả)
 ```
 
 ## Giới hạn hiện tại
