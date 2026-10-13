@@ -7,7 +7,7 @@ Skill giúp Claude tạo và trình bày lại file Excel theo một chuẩn duy
 Cần: macOS, Claude Code, python3.
 
 ```bash
-git clone <đường dẫn kho> leonardo-excel-package
+git clone https://github.com/phuvandang/leonardo-excel.git leonardo-excel-package
 cd leonardo-excel-package
 bash install.sh
 ```
