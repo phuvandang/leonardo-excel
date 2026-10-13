@@ -1,0 +1,89 @@
+{
+  "type": "Tiêu chuẩn nội bộ",
+  "title": "Tiêu chuẩn trình bày văn bản Leonardo",
+  "subtitle": "Áp dụng cho quy chế, quy trình, báo cáo, tờ trình và biên bản soạn bằng Word",
+  "code": "TC-VB-01",
+  "header_title": "Tiêu chuẩn trình bày văn bản",
+  "control": {
+    "Mã tài liệu": "TC-VB-01",
+    "Phiên bản": "1.0 (bản đề xuất)",
+    "Ngày hiệu lực": "Chờ phê duyệt",
+    "Phạm vi": "Toàn công ty",
+    "Người soạn": "",
+    "Người duyệt": ""
+  },
+  "body": [
+    {"h1": "Mục đích và nguyên lý"},
+    {"p": "Tiêu chuẩn này quy định cách trình bày mọi văn bản Word của Leonardo, để người đọc nhận ra ngay đây là tài liệu của công ty và tìm được thông tin cần thiết mà không phải dò."},
+    {"p": "Một văn bản dễ đọc khi mắt chỉ phải phân biệt ba thứ: **tiêu đề**, **nội dung** và **số liệu**. Vì vậy tiêu chuẩn chỉ dùng một màu nhận diện cho tiêu đề, chữ đen cho nội dung và một kiểu bảng duy nhất cho số liệu. Màu sắc không dùng để trang trí."},
+    {"note": "Tiêu chuẩn này dùng chung bảng màu, logo, quy tắc chữ và quy tắc số với tiêu chuẩn trình bày Excel của Leonardo.", "label": "Liên quan"},
+
+    {"h1": "Trang giấy và lề"},
+    {"table": {"caption": "Thông số trang", "columns": ["Yếu tố", "Quy định", "Căn cứ"], "widths": [3, 4, 5], "rows": [
+      ["Khổ giấy", "A4 dọc (210 × 297 mm)", "Thông lệ văn bản hành chính Việt Nam"],
+      ["Lề trên / dưới", "25 mm / 20 mm", "Trong khoảng 20–25 mm của Nghị định 30/2020/NĐ-CP"],
+      ["Lề trái / phải", "30 mm / 20 mm", "Trong khoảng 30–35 mm và 15–20 mm của Nghị định 30/2020/NĐ-CP"],
+      ["Bề rộng vùng chữ", "160 mm", "Khoảng 85–90 ký tự mỗi dòng ở cỡ chữ 12"]
+    ]}},
+
+    {"h1": "Phông chữ và đoạn văn"},
+    {"table": {"caption": "Phông chữ theo vai trò", "columns": ["Vai trò", "Phông", "Cỡ", "Kiểu"], "widths": [4, 3, 1.5, 3.5], "align": ["l", "l", "c", "l"], "rows": [
+      ["Tên văn bản", "Tahoma", 16, "Đậm, in hoa, xanh rừng"],
+      ["Tiêu đề cấp 1", "Tahoma", 13, "Đậm, in hoa, xanh rừng"],
+      ["Tiêu đề cấp 2", "Tahoma", 12, "Đậm, đen"],
+      ["Tiêu đề cấp 3", "Tahoma", 11, "Đậm nghiêng, đen"],
+      ["Nội dung", "Times New Roman", 12, "Thường, đen, canh đều hai bên"],
+      ["Bảng", "Tahoma", 10, "Tiêu đề cột đậm, chữ trắng trên nền xanh"],
+      ["Đầu trang, chân trang", "Tahoma", 8, "Xám"]
+    ]}},
+    {"bullets": [
+      "Giãn dòng 1,3 lần cỡ chữ; cách đoạn 6 pt phía sau. Không thụt đầu dòng, vì khoảng cách đoạn đã đủ để tách đoạn.",
+      "Nhấn mạnh bằng **chữ đậm**; không gạch chân, không in hoa cả câu, không đổi màu chữ trong đoạn văn.",
+      "Hai phông trên có sẵn trên mọi máy Windows và macOS và hiển thị đúng tiếng Việt, nên văn bản không bị vỡ khi gửi đi."
+    ]},
+
+    {"h1": "Cấu trúc một văn bản"},
+    {"h2": "Trang đầu"},
+    {"numbered": [
+      "Đầu trang có logo bên trái; tên công ty, mã số thuế và địa chỉ bên phải; bên dưới là một đường kẻ xanh.",
+      "Loại văn bản (in hoa, xám), tên văn bản (in hoa, xanh rừng) và một dòng mô tả in nghiêng.",
+      "Bảng kiểm soát tài liệu: mã, phiên bản, ngày hiệu lực, phạm vi, người soạn, người duyệt."
+    ]},
+    {"h2": "Các trang sau"},
+    {"p": "Đầu trang thu gọn: logo nhỏ bên trái, tên ngắn và mã tài liệu bên phải. Chân trang ghi tên công ty bên trái và “Trang x / y” bên phải."},
+    {"h2": "Hệ tiêu đề"},
+    {"p": "Dùng tối đa ba cấp, đánh số thập phân: 1. / 1.1 / 1.1.1. Tiêu đề luôn đi liền với đoạn ngay sau nó, không nằm lẻ cuối trang. Văn bản dài hơn năm trang thì có mục lục."},
+    {"h3": "Cách viết tiêu đề"},
+    {"p": "Cấp 1 in hoa toàn bộ. Cấp 2 và cấp 3 chỉ viết hoa chữ đầu và tên riêng. Tiêu đề là một cụm danh từ ngắn, không có dấu chấm cuối."},
+
+    {"h1": "Bảng và số liệu"},
+    {"p": "Mọi bảng dùng một kiểu: tiêu đề cột nền xanh chữ trắng, lưới mảnh, dòng tổng nền xanh nhạt. Tên bảng đặt phía trên, đánh số liên tục trong văn bản. Bảng dài sang trang thì dòng tiêu đề được lặp lại."},
+    {"table": {"caption": "Ví dụ bảng số liệu (số giả, đơn vị: triệu đồng)", "columns": ["Chỉ tiêu", "Tháng 09", "Tháng 10", "Chênh lệch"], "widths": [5, 2, 2, 2], "total_row": true, "rows": [
+      ["Kênh A", 520, 610, 90],
+      ["Kênh B", 240, 205, -35],
+      ["Cửa hàng", 330, 345, 15],
+      ["TỔNG CỘNG", 1090, 1160, 70]
+    ]}},
+    {"bullets": [
+      "Chữ canh trái, số canh phải, tiêu đề cột canh giữa.",
+      "Dấu chấm ngăn nghìn, dấu phẩy thập phân; số âm đặt trong ngoặc; luôn ghi đơn vị ở tên bảng hoặc tiêu đề cột.",
+      "Số liệu chi tiết nhiều cột thì để ở file Excel và chỉ đưa bảng tóm tắt vào văn bản."
+    ]},
+
+    {"h1": "Quy tắc chữ"},
+    {"table": {"columns": ["Loại", "Cách viết", "Ví dụ"], "widths": [3, 4.5, 4.5], "rows": [
+      ["Tên riêng", "Viết đúng theo chủ sở hữu", "Shopee, TikTok, VNPAY, 1Office"],
+      ["Danh từ chung giữa câu", "Viết thường", "phòng kế toán, cửa hàng trưởng"],
+      ["Dấu thanh", "Kiểu cũ", "hòa, hóa, lũy, xóa"],
+      ["Tháng, ngày", "Hai chữ số", "tháng 08; ngày 05 tháng 11 năm 2026"],
+      ["Chữ viết tắt", "Viết đầy đủ ở lần đầu, kèm chữ tắt trong ngoặc", "nhà cung cấp (NCC)"]
+    ]}},
+    {"note": "Chữ tắt không rõ nghĩa thì hỏi lại người soạn; không tự đoán.", "label": "Lưu ý"},
+
+    {"h1": "Khối ký và đặt tên file"},
+    {"p": "Khối ký đặt cuối văn bản, không tách rời khỏi nội dung sang một trang riêng. Chức danh in hoa, đậm; bên dưới là dòng “(Ký, ghi rõ họ tên)” và họ tên người ký."},
+    {"p": "Tên file theo mẫu **Mã_Tên-ngắn_vPhiên-bản.docx**, ví dụ TC-VB-01_Tieu-chuan-trinh-bay-van-ban_v1.0.docx."}
+  ],
+  "place_date": "TP. Hồ Chí Minh, ngày … tháng … năm 2026",
+  "signers": [["Người soạn", ""], ["Người duyệt", ""]]
+}

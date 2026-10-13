@@ -1,4 +1,4 @@
-# leonardo-excel — chuẩn trình bày Excel của Leonardo cho Claude Code
+# leonardo-excel — chuẩn trình bày Excel và Word của Leonardo cho Claude Code
 
 Skill giúp Claude tạo và trình bày lại file Excel theo một chuẩn duy nhất của Leonardo: màu xanh rừng, logo, khối thông tin công ty, bố cục STT / Nội dung / Mã chỉ tiêu, quy tắc chữ và định dạng số.
 
@@ -29,6 +29,14 @@ Claude sẽ tự chọn trong ba luồng:
 | Tạo mới | Chưa có file | Một file `.xlsx` mới, số tổng và tỷ lệ là công thức |
 | Trình bày lại | Đã có file (thường của kế toán) | File mới cạnh file gốc: sheet trình bày ở đầu, mỗi ô số trỏ về ô gốc; sheet gốc được ẩn, không bị sửa |
 | Soát chữ và trình bày | File đã đúng bố cục, cần sạch chữ | File mới đã sửa lỗi chính tả, tên riêng, dấu thanh, viết tắt, cách ghi tháng, chữ bị cắt; kèm danh sách những chỗ cần anh/chị quyết định |
+
+## Văn bản Word
+
+Gói này cài thêm skill `leonardo-word`: soạn file Word theo cùng bộ nhận diện (màu, logo, thông tin công ty, quy tắc chữ). Nói với Claude, ví dụ: "Soạn quy trình thanh toán thành file Word theo chuẩn Leonardo".
+
+Mỗi văn bản có: đầu trang có logo, tên văn bản, bảng kiểm soát tài liệu, tiêu đề đánh số ba cấp, một kiểu bảng duy nhất, khối ký, chân trang có số trang. Bộ chuẩn và căn cứ tham khảo nằm ở `skills/leonardo-word/STYLE.md`; văn bản minh hoạ tạo từ `skills/leonardo-word/examples/tieu-chuan.json`.
+
+Hiện chỉ hỗ trợ tạo văn bản mới; trình bày lại và soát chữ file Word có sẵn chưa có lệnh riêng.
 
 ## Những điều cần biết
 
