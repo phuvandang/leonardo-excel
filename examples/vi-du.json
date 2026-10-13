@@ -1,0 +1,30 @@
+{
+  "period": "Từ 01/10/2026 đến 31/10/2026",
+  "report_date": "Ngày 05 tháng 11 năm 2026",
+  "unit": "triệu đồng",
+  "sheets": [
+    {
+      "name": "01 Doanh thu kênh",
+      "title": "BÁO CÁO VÍ DỤ — DOANH THU THEO KÊNH",
+      "subtitle": "Tháng 10 năm 2026",
+      "label_width": 34,
+      "blocks": [
+        {
+          "title": "Doanh thu theo kênh bán (số giả, chỉ để minh hoạ)",
+          "columns": ["Kênh bán", "Tháng 09", "Tháng 10", "Chênh lệch", "% thay đổi", "Trạng thái"],
+          "formats": ["number", "number", "number", "percent", "status"],
+          "status_column": 5,
+          "rows": [
+            {"label": "SÀN THƯƠNG MẠI ĐIỆN TỬ", "kind": "sub"},
+            {"id": "a", "label": "Kênh A", "values": [520, 610, "=E{r}-D{r}", "=IF(D{r}=0,0,F{r}/D{r})", "=IF(F{r}<0,\"Giảm\",\"Tăng\")"]},
+            {"id": "b", "label": "Kênh B", "values": [240, 205, "=E{r}-D{r}", "=IF(D{r}=0,0,F{r}/D{r})", "=IF(F{r}<0,\"Giảm\",\"Tăng\")"]},
+            {"label": "BÁN TRỰC TIẾP", "kind": "sub"},
+            {"id": "c", "label": "Cửa hàng", "values": [330, 345, "=E{r}-D{r}", "=IF(D{r}=0,0,F{r}/D{r})", "=IF(F{r}<0,\"Giảm\",\"Tăng\")"]},
+            {"label": "TỔNG DOANH THU", "kind": "group", "values": ["=D{a}+D{b}+D{c}", "=E{a}+E{b}+E{c}", "=E{r}-D{r}", "=IF(D{r}=0,0,F{r}/D{r})", null]}
+          ],
+          "note": "Ghi chú: Số liệu trong file ví dụ là số giả. Cột chênh lệch và % thay đổi là công thức."
+        }
+      ]
+    }
+  ]
+}
