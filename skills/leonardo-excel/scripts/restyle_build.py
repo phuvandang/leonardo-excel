@@ -23,8 +23,8 @@ ap.add_argument('--unit'); ap.add_argument('--period'); ap.add_argument('--repor
 ap.add_argument('--label-width', type=float, default=44); ap.add_argument('--value-width', type=float, default=18.5)
 ap.add_argument('--no-info', action='store_true', help='bỏ khối thông tin công ty')
 ap.add_argument('--label-col', help='chữ cột nguồn dùng làm cột nội dung (mặc định: tự nhận). Ví dụ C cho cột Họ tên')
-ap.add_argument('--code-col', help='chữ cột nguồn đưa vào cột mã (ví dụ B cho mã nhân viên); mặc định mã tự đánh số')
-ap.add_argument('--code-title', default='Mã chỉ tiêu', help='tiêu đề cột mã')
+ap.add_argument('--code-col', help='chữ cột nguồn đưa vào cột thứ ba thay cho mã tự đánh số (ví dụ B cho mã nhân viên, hoặc cột Phòng ban khi bảng không có mã)')
+ap.add_argument('--code-title', help='tiêu đề cột mã (mặc định: tiêu đề của --code-col trong file gốc, hoặc "Mã chỉ tiêu")')
 A = ap.parse_args()
 S = openpyxl.load_workbook(A.src, read_only=True, data_only=True)
 clean = lambda t: ' '.join(str(t).split()) if isinstance(t, str) else t
@@ -80,7 +80,7 @@ def label_col(rows, cols):
 def render(sh, name, rows, cols, skipped):
     q = "'" + name.replace("'", "''") + "'"
     lab = label_col(rows, cols); before = [c for c in cols if c < lab]; cc = col_index(A.code_col) if A.code_col else None
-    vcols = [c for c in cols if c > lab]; items = []
+    vcols = [c for c in cols if c > lab and c != cc]; items = []
     for rn in sorted(rows):
         d = {c: rows[rn][c] for c in cols if c in rows[rn]}
         if not d: continue
@@ -111,7 +111,10 @@ def render(sh, name, rows, cols, skipped):
         elif it['cls'] == 'DATA' and blocks: blocks[-1].append(it)
     for blk in blocks:
         if blk and sum(1 for it in blk if it['bold'] or it['filled']) > len(blk) / 2:
-            for it in blk: it['bold'] = it['filled'] = bool(it['lc'] and it['lc'] != lab)
+            for it in blk:                   # dòng nhóm: nhãn nằm ở cột phía trước, có ký hiệu nhóm in đậm ở cột phía trước (A, B, I, II…), hoặc không có nhãn mà chữ đậm nằm ở cột số liệu
+                mark = any(isinstance(it['d'][c][0], str) and it['d'][c][1] for c in before if c in it['d'] and c != cc)
+                it['bold'] = it['filled'] = bool((it['lc'] and it['lc'] != lab) or mark or (it['lc'] is None and it['bold']))
+                it['nostt'] = it['bold'] and not mark          # dòng tổng của bảng danh sách: không đánh số
     in_table = False; title = None; notes = []; gi = ii = 0; textblock = False
     for it in items:
         d, rn, cls = it['d'], it['rn'], it['cls']
@@ -123,7 +126,7 @@ def render(sh, name, rows, cols, skipped):
             textblock = it['ext'] == 1 and not it.get('hasnum')
             sh.block(title or hl, ncols=(min(sh.n, 9) - 3) if textblock else it['ext'])
             for t in notes: sh.note(t)
-            sh.header(['STT', hl, A.code_title] + [hdr_text(d[c][0]) if c in d else None for c in vcols], merge_from=4 if textblock else None)
+            sh.header(['STT', hl, A.code_title or (hdr_text(d[cc][0]) if cc and cc in d else 'Mã chỉ tiêu')] + [hdr_text(d[c][0]) if c in d else None for c in vcols], merge_from=4 if textblock else None)
             in_table = True; title = None; notes = []; gi = ii = 0; continue
         if not in_table and cls == 'TEXT1': title = first_txt; continue
         if not in_table:
@@ -138,11 +141,14 @@ def render(sh, name, rows, cols, skipped):
             sh.row('', label, [], 'sub'); ii = 0; continue
         present = [v for v, _, _ in vals if v is not None]
         merge = len(present) == 1 and isinstance(present[0], str) and vals[0][0] is not None and (textblock or len(present[0]) > 30)
-        if it['bold'] or it['filled']: stt = rom(gi); gi += 1; ii = 0; kind = 'group'
+        src = next((d[c][0] for c in before if c in d and c != cc and c != it['lc']), None)      # số thứ tự hoặc ký hiệu nhóm có sẵn trong bản gốc
+        src = int(src) if isnum(src) and float(src).is_integer() else (clean(src) if isinstance(src, str) else None)
+        if not A.label_col: src = None                    # chỉ bảng danh sách (có --label-col) mới giữ số thứ tự gốc; báo cáo thì đánh lại theo từng nhóm
+        if it['bold'] or it['filled']: stt = '' if it.get('nostt') else (src if isinstance(src, str) else rom(gi)); gi += 1; ii = 0; kind = 'group'
         elif label is None and merge: stt = ''; kind = 'item'
-        else: ii += 1; stt = ii; kind = 'item'
+        else: ii += 1; stt = src if src is not None else ii; kind = 'item'
         code = (d[cc][0], f'{q}!{CL(cc)}{rn}') if cc and cc in d and cc != it['lc'] else (not cc)
-        sh.row(stt, label if label is not None else ('' if merge else '(không có tên trong bản gốc)'), vals, kind, merge_text=merge, code=code)
+        sh.row(stt, label if label is not None else ('' if merge or kind == 'group' else '(không có tên trong bản gốc)'), vals, kind, merge_text=merge, code=code)
 
 
 wb = Workbook(); wb.remove(wb.active); skipped = []; VAL = {}; meta = dict(sources=[], new=[]); summary = []
