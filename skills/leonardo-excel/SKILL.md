@@ -5,12 +5,15 @@ description: Bộ chuẩn trình bày file Excel của Leonardo (màu xanh rừn
 
 # Chuẩn trình bày Excel của Leonardo
 
-Skill có hai luồng việc. Chọn luồng trước khi làm:
+Skill có ba luồng việc. Chọn luồng trước khi làm:
 
 | Tình huống | Luồng | Script |
 |---|---|---|
 | Chưa có file, cần dựng một bảng/báo cáo mới | **Tạo mới** | `new_report.py` |
 | Đã có file Excel (thường của kế toán), cần trình bày lại mà không đổi số | **Trình bày lại** | `restyle_build.py` → `restyle_merge.py` → `verify.py` |
+| File đã đúng bố cục, cần soát lỗi chính tả, viết tắt, viết hoa, chữ bị cắt | **Soát chữ và trình bày** | `proofread.py` |
+
+Sau luồng 1 hoặc 2, chạy tiếp luồng 3 trên file kết quả trước khi giao, trừ khi người dùng nói không cần.
 
 Bộ chuẩn bằng chữ (màu, phông, bố cục, quy tắc chữ) nằm ở `STYLE.md`. Đọc file đó khi cần tự viết mã thay vì dùng script, hoặc khi người dùng hỏi về chuẩn.
 
@@ -46,12 +49,30 @@ Nguyên lý: không đụng vào sheet gốc. Dựng sheet trình bày mới, m�
 5. Xem trước bằng `preview.py`, đọc ảnh các sheet chính.
 6. Đặt file kết quả cạnh file gốc với tên mới (ví dụ thêm `_trinh-bay-moi`). Không ghi đè file gốc.
 
+## Luồng 3 — Soát chữ và trình bày
+
+Nguyên lý: máy sửa những lỗi có quy tắc chắc chắn; người đọc (Claude) quyết những chỗ cần hiểu nghĩa; chỗ không chắc thì hỏi lại chứ không đoán. Luồng này chỉ được đổi **chữ** và **chiều cao dòng**.
+
+1. Chép file vào thư mục tạm. Xác định các sheet trình bày cần soát và luôn truyền rõ bằng `--sheets "A,B,…"`; không soát sheet dữ liệu thô hay sheet đang được công thức dò chữ (SUMIFS, VLOOKUP…), vì đổi một chữ là số liệu sai.
+2. Đọc toàn bộ chữ: `$PY -I scripts/proofread.py file.xlsx --dump --sheets "…"`. Ô có dấu `=` là chữ hiện ra từ công thức, kèm công thức nguồn.
+3. Xem máy đề xuất gì: `$PY -I scripts/proofread.py file.xlsx --sheets "…" [--skip-rows 10]`. Kết quả gồm: thay đổi máy sẽ làm, gợi ý viết tắt, chữ lấy từ công thức cần sửa tại nguồn, ô bị bỏ qua vì đang được công thức so khớp, dòng cần nới chiều cao, cảnh báo `####` và chữ bị che.
+4. Đọc lại bản dump và tự tìm những lỗi máy không bắt được, theo `STYLE.md`: lỗi gõ chưa có trong `rules.json`, câu thiếu thành phần hoặc lủng củng, viết hoa không thống nhất trong cùng loại dòng, chữ tắt người ngoài không hiểu, cách ghi số và ký hiệu. Ghi các sửa này vào một file JSON: `[{"sheet": "…", "cell": "B14", "text": "Chữ mới"}]`.
+   - Chữ tắt không rõ nghĩa, câu mà sửa có thể đổi nghĩa, tiêu đề ngày hoặc số liệu nghi sai: **không sửa**, đưa vào danh sách hỏi lại kèm đề xuất.
+   - Nội dung lỗi thời so với kỳ báo cáo (câu còn nói kỳ cũ): **không sửa**, chỉ liệt kê.
+   - Viết tắt: xem danh sách gợi ý; nếu mọi mục đều đúng nghĩa thì thêm `--abbrev`, nếu chỉ một số đúng thì đưa riêng các mục đó vào file JSON.
+5. Ghi ra file mới: `$PY -I scripts/proofread.py file.xlsx --sheets "…" --edits sua.json [--abbrev] [--skip-rows 10] --apply ket-qua.xlsx`. Script tự so trước/sau và chỉ giữ file khi `KẾT LUẬN: ĐẠT` (công thức và giá trị số giống hệt).
+6. Chạy lại bước 3 trên file kết quả: phải còn 0 thay đổi. Rồi xem ảnh bằng `preview.py`.
+7. Lỗi gõ mới gặp mà có thể lặp lại ở file khác: đề nghị người dùng cho thêm vào `rules.json` của gói để cả team dùng chung.
+
+Chữ hiện ra từ công thức: script không sửa. Nếu nguồn là một ô chữ ở sheet khác thì soát chính sheet đó (sau khi chắc rằng ô đó không nằm trong vùng dò của công thức nào); nếu nguồn là chuỗi nằm trong công thức thì báo người dùng.
+
 ## Ràng buộc cứng
 
 Mỗi điều dưới đây đến từ một sự cố thật; đừng bỏ qua vì file "trông đơn giản".
 
 - **Không mở rồi lưu lại file gốc bằng openpyxl.** Việc đó làm mất giá trị đã tính của công thức, có thể hỏng biểu đồ, bảng tổng hợp động và liên kết ngoài. Chỉ `restyle_merge.py` được chạm vào file gốc, và nó chỉ thêm phần mới.
 - **Không ghi đè file gốc**, trừ khi người dùng yêu cầu rõ; khi đó sao lưu trước và nói rõ bản sao lưu nằm ở đâu.
+- **Luồng 3 không được đổi số, công thức, định dạng số, màu, độ rộng cột hay bố cục;** cũng không sửa chữ trong sheet dữ liệu thô.
 - **Không chạy lại một bước vá lên file đã vá.** Muốn làm lại thì bắt đầu từ file gốc. Vá chồng từng tạo ra khai báo trùng trong biểu đồ khiến Excel không mở được file.
 - **Không đổi số, không làm tròn số nguồn, không đổi đơn vị.** Nếu bản gốc tính theo đồng thì bản trình bày ghi "Đơn vị: đồng".
 - **Không tự điền thông tin không có nguồn** (ngày lập báo cáo, người ký): để trống và nói rõ.
@@ -61,3 +82,5 @@ Mỗi điều dưới đây đến từ một sự cố thật; đừng bỏ qua
 ## Báo cáo kết quả cho người dùng
 
 Bằng tiếng Việt, kết luận trước: file ở đâu, số ô liên kết và số ô lệch (luồng 2), những dòng bị bỏ qua và vì sao, những gì chưa được xem bằng mắt, và việc người dùng cần làm tiếp.
+
+Riêng luồng 3, báo thêm: bảng các chỗ đã sửa (gộp lỗi lặp lại thành một dòng kèm số ô), danh sách hỏi lại (chữ tắt lạ, câu không dám sửa, nội dung lỗi thời, mỗi mục kèm vị trí và đề xuất), và kết quả tự kiểm tra.

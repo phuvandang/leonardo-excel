@@ -1,0 +1,21 @@
+{
+  "_ghi_chu": "Bảng quy tắc soát chữ của proofread.py. Team bổ sung dần tại đây rồi cài lại skill. 'typos' và 'abbreviations' so khớp phân biệt hoa thường; 'brands' là biểu thức chính quy.",
+  "typos": [
+    ["Tài SẢN", "TÀI SẢN"], ["SỠ HỮU", "SỞ HỮU"], ["CÂN ĐỒI", "CÂN ĐỐI"], ["ngăn hạn", "ngắn hạn"], ["Gía vốn", "Giá vốn"],
+    ["cua hang", "cửa hàng"], ["đầu từ KD", "đầu tư KD"], ["cty", "công ty"], ["năm ngoài các hạng mục", "nằm ngoài các hạng mục"],
+    ["cấu thành lên", "cấu thành nên"], ["pasrtime", "part-time"], ["partime", "part-time"], ["outsorce", "outsource"],
+    ["(ko ", "(không "], [" ko ", " không "], ["Công Ty", "Công ty"], ["nhà NCC", "nhà cung cấp"],
+    ["chưa VAT", "chưa gồm thuế GTGT"], ["so tháng trước", "so với tháng trước"], ["Sự kiên", "Sự kiện"], ["Quán lý", "Quản lý"]
+  ],
+  "brands": [
+    ["[sS]hop+e+", "Shopee"], ["[Tt]ik[Tt]ok(?:shop)?", "TikTok"], ["shippo", "Shippo"], ["lazada", "Lazada"], ["facebook", "Facebook"],
+    ["google", "Google"], ["zalo", "Zalo"], ["momo", "MoMo"], ["Vnpay", "VNPAY"], ["vnpay", "VNPAY"], ["Onepay", "OnePay"], ["1office", "1Office"]
+  ],
+  "abbreviations": {
+    "NCC": "nhà cung cấp", "MB": "mặt bằng", "NPL": "nguyên phụ liệu", "NVL": "nguyên vật liệu", "UNC": "ủy nhiệm chi",
+    "VP": "văn phòng", "CN": "chi nhánh", "DT": "doanh thu", "TK": "tài khoản", "PKT": "phòng kế toán", "HKD": "hộ kinh doanh",
+    "TNDN": "thu nhập doanh nghiệp", "MKT": "marketing", "LZD": "Lazada", "VAT": "thuế GTGT", "CP": "chi phí", "NV": "nhân viên",
+    "KD": "kinh doanh", "HN": "Hà Nội", "VT": "Vũng Tàu"
+  },
+  "keep": ["GTGT", "TMĐT", "D2C", "KQKD", "ROE", "HCM", "VCB", "TCB", "ACB", "GHTK", "GHN", "CEO", "HCNS", "CSKH", "QC", "KOL", "KOC", "R&D", "STT", "MSNV"]
+}

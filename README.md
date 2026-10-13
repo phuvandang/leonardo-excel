@@ -20,13 +20,15 @@ Mở Claude Code và nói bằng lời thường, ví dụ:
 
 - "Tạo file Excel theo chuẩn Leonardo: bảng doanh thu theo kênh tháng 10, số liệu như sau…"
 - "Trình bày lại file `~/Downloads/bao-cao-thang-10.xlsx` theo chuẩn Leonardo, giữ nguyên số liệu."
+- "Soát lỗi chính tả, viết tắt và trình bày của file này theo chuẩn Leonardo."
 
-Claude sẽ tự chọn một trong hai luồng:
+Claude sẽ tự chọn trong ba luồng:
 
 | Luồng | Khi nào | Kết quả |
 |---|---|---|
 | Tạo mới | Chưa có file | Một file `.xlsx` mới, số tổng và tỷ lệ là công thức |
 | Trình bày lại | Đã có file (thường của kế toán) | File mới cạnh file gốc: sheet trình bày ở đầu, mỗi ô số trỏ về ô gốc; sheet gốc được ẩn, không bị sửa |
+| Soát chữ và trình bày | File đã đúng bố cục, cần sạch chữ | File mới đã sửa lỗi chính tả, tên riêng, dấu thanh, viết tắt, cách ghi tháng, chữ bị cắt; kèm danh sách những chỗ cần anh/chị quyết định |
 
 ## Những điều cần biết
 
@@ -46,8 +48,9 @@ skills/leonardo-excel/
   SKILL.md        hướng dẫn cho Claude: hai luồng việc, ràng buộc cứng
   STYLE.md        bộ chuẩn bằng chữ: màu, phông, bố cục, quy tắc chữ và số
   config.json     thông tin công ty
+  rules.json      bảng quy tắc soát chữ: lỗi gõ, tên riêng, chữ tắt (team bổ sung dần)
   assets/         logo
-  scripts/        leo_style.py (thư viện chuẩn), new_report.py, restyle_build.py, restyle_merge.py, verify.py, preview.py
+  scripts/        leo_style.py (thư viện chuẩn), new_report.py, restyle_build.py, restyle_merge.py, verify.py, proofread.py, preview.py
   examples/       vi-du.json: bản mô tả mẫu cho luồng tạo mới (số giả)
 ```
 
@@ -55,5 +58,10 @@ skills/leonardo-excel/
 
 - Luồng tạo mới chưa dựng biểu đồ từ bản mô tả; cần biểu đồ thì Claude viết mã riêng dùng `leo_style.py`.
 - Luồng trình bày lại không dựng lại biểu đồ của sheet gốc; biểu đồ vẫn nằm ở sheet gốc đang ẩn.
-- Chưa có bước soát chính tả tự động; quy tắc chữ nằm trong `STYLE.md` để Claude tuân theo khi viết.
+- Bước soát chữ chỉ tự sửa lỗi có trong `rules.json` (lỗi gõ đã biết, tên riêng, dấu thanh, cách ghi tháng, bảng chữ tắt). Câu cú và chữ tắt lạ do Claude đọc và đề xuất; chỗ không chắc sẽ được hỏi lại.
+- Bước soát chữ không sửa chữ hiện ra từ công thức và không sửa tiêu đề, chú thích biểu đồ.
 - Mã chỉ tiêu được đánh số tự động theo sheet, chưa phải bảng mã cố định.
+
+## Bổ sung quy tắc soát chữ
+
+Gặp lỗi gõ, tên riêng hoặc chữ tắt mới: thêm vào `skills/leonardo-excel/rules.json`, commit, đẩy lên; mọi người `git pull && bash install.sh`. Chữ tắt chỉ đưa vào bảng khi nó có một nghĩa duy nhất trong tài liệu của Leonardo.

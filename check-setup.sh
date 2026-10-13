@@ -7,6 +7,7 @@ echo "Kiểm tra skill leonardo-excel"
 [[ -f "$DEST/SKILL.md" ]] && ok "SKILL.md" || err "Chưa có $DEST/SKILL.md — chạy: bash install.sh"
 [[ -f "$DEST/assets/logo-forest-480.png" ]] && ok "Logo" || err "Thiếu logo trong $DEST/assets"
 [[ -f "$DEST/config.json" ]] && ok "config.json" || err "Thiếu config.json"
+[[ -f "$DEST/rules.json" ]] && ok "rules.json" || err "Thiếu rules.json"
 if [[ -x "$VENV/bin/python" ]] && "$VENV/bin/python" -c "import openpyxl, PIL" 2>/dev/null; then ok "Python + openpyxl + pillow"; else err "Thiếu môi trường Python — chạy: bash install.sh"; fi
 command -v qlmanage >/dev/null 2>&1 && ok "Quick Look (xem trước ảnh)" || echo "  ⚠ Không có Quick Look: bước xem trước ảnh sẽ bị bỏ qua (chỉ có trên macOS)"
 exit $FAIL
