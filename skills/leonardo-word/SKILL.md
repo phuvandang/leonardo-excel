@@ -24,6 +24,19 @@ Python: `~/.local/share/leonardo-excel-venv/bin/python` (gọi tắt `$PY`, có 
 
 Bố cục JSON không tả được (hình ảnh, mục lục, bảng gộp ô): viết mã Python ngắn dùng lớp `Doc` trong `scripts/leo_doc.py`; không gõ lại mã màu, phông, lề ở nơi khác. Phần tử XML tự thêm phải đi qua hàm `_put()` để đúng thứ tự lược đồ.
 
+## Trình bày lại một file Word có sẵn
+
+Nguyên lý: chép nguyên văn chữ và số của bản gốc sang một file mới dựng theo chuẩn, rồi so chữ trước và sau.
+
+1. Chép file gốc vào thư mục tạm, đọc qua để biết đó là văn bản của ai và có gì đặc biệt (chữ ký, bảng gộp ô, hình).
+2. Chạy: `$PY -I scripts/restyle_doc.py goc.docx ket-qua.docx [--header-title "tên ngắn ở đầu trang"] [--letterhead]`
+   - **Mặc định không đặt logo và thông tin Leonardo.** Chỉ thêm `--letterhead` khi văn bản là của Leonardo. Văn bản của tổ chức khác mà gắn nhận diện Leonardo sẽ gây hiểu nhầm về người phát hành.
+   - Script tự so chữ và chỉ giữ file khi mọi đoạn và mọi ô bảng khớp. Đọc dòng "KHÔNG mang theo" và báo lại cho người dùng (chữ ký số, ghi chú, theo dõi thay đổi, chú thích cuối trang, mục lục tự động, hộp chữ).
+3. `$PY -I scripts/check_docx.py ket-qua.docx`, rồi xem ảnh trang đầu bằng Quick Look.
+4. Đặt file kết quả cạnh file gốc với tên mới. Không ghi đè.
+
+Cách script nhận diện: các dòng in hoa canh giữa ở đầu là tên văn bản; mục đánh số 1., 2.… là tiêu đề cấp 1; bảng đứng trước tên văn bản và bảng cuối cùng không có số liệu là bảng dàn trang (quốc hiệu, khối ký), giữ bố cục và không kẻ viền; các bảng khác nhận kiểu bảng chuẩn. Dòng đầu bảng là tiêu đề cột chỉ khi nó không chứa số. Chữ và cách ghi số trong bảng được giữ nguyên, không đổi sang quy tắc số của Leonardo.
+
 ## Ràng buộc cứng
 
 - **Không ghi đè file của người dùng**; luôn ra file mới.
@@ -34,4 +47,4 @@ Bố cục JSON không tả được (hình ảnh, mục lục, bảng gộp ô)
 
 ## Chưa hỗ trợ
 
-Trình bày lại một file Word có sẵn và soát chữ trong file Word chưa có lệnh riêng. Khi được yêu cầu: đọc nội dung file, dựng lại bằng luồng tạo mới, rồi so chữ với bản gốc bằng `check_docx.py` và báo mọi chỗ khác.
+Soát chữ trong file Word chưa có lệnh riêng. Tiêu đề cấp 2, cấp 3 của bản gốc được giữ làm đoạn thường khi trình bày lại.

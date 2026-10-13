@@ -36,7 +36,7 @@ Gói này cài thêm skill `leonardo-word`: soạn file Word theo cùng bộ nh�
 
 Mỗi văn bản có: đầu trang có logo, tên văn bản, bảng kiểm soát tài liệu, tiêu đề đánh số ba cấp, một kiểu bảng duy nhất, khối ký, chân trang có số trang. Bộ chuẩn và căn cứ tham khảo nằm ở `skills/leonardo-word/STYLE.md`; văn bản minh hoạ tạo từ `skills/leonardo-word/examples/tieu-chuan.json`.
 
-Hiện chỉ hỗ trợ tạo văn bản mới; trình bày lại và soát chữ file Word có sẵn chưa có lệnh riêng.
+Hỗ trợ tạo văn bản mới và trình bày lại file Word có sẵn (chép nguyên văn chữ và số, tự so trước và sau). Soát chữ trong file Word chưa có lệnh riêng.
 
 ## Những điều cần biết
 

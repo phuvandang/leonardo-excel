@@ -135,7 +135,9 @@ def _widths(table, widths_mm, pad=True):
 class Doc:
     """Một văn bản theo chuẩn Leonardo. Gọi lần lượt: title_block → h1/h2/h3/p/bullets/numbered/table/note → signers → save."""
 
-    def __init__(self, header_title='', code=''):
+    def __init__(self, header_title='', code='', letterhead=True):
+        """letterhead=False: không đặt logo và thông tin Leonardo (dùng khi trình bày lại văn bản của tổ chức khác)."""
+        self.letterhead = letterhead
         self.d = d = Document(); self.n = [0, 0, 0]; self.ntable = 0
         s = d.sections[0]; s.page_width, s.page_height = Mm(210), Mm(297); s.orientation = WD_ORIENT.PORTRAIT
         s.top_margin, s.bottom_margin, s.left_margin, s.right_margin = (Mm(MARGIN[k]) for k in ('top', 'bottom', 'left', 'right'))
@@ -151,12 +153,20 @@ class Doc:
 
     # ----- đầu trang, chân trang
     def _header_footer(self, s, title, code):
+        items = list(CONFIG['company'].items())
+        if not self.letterhead:                  # không nhận diện Leonardo: chỉ tên văn bản ở đầu trang và số trang ở chân trang
+            hp = s.header.paragraphs[0]; hp.alignment = WD_ALIGN_PARAGRAPH.RIGHT; hp.paragraph_format.space_after = Pt(0)
+            _font(hp.add_run(' · '.join(x for x in (title, code) if x)), HEAD_FONT, SMALL_PT, color=P['grey']); _para_border(hp, 'bottom', 6, P['green'], space=3)
+            fp = s.footer.paragraphs[0]; fp.alignment = WD_ALIGN_PARAGRAPH.RIGHT; fp.paragraph_format.space_after = Pt(0); _para_border(fp, 'top', 4, P['grid'], space=6)
+            _font(fp.add_run('Trang '), HEAD_FONT, SMALL_PT, color=P['grey']); _field(fp, 'PAGE', name=HEAD_FONT, size=SMALL_PT, color=P['grey'])
+            _font(fp.add_run(' / '), HEAD_FONT, SMALL_PT, color=P['grey']); _field(fp, 'NUMPAGES', name=HEAD_FONT, size=SMALL_PT, color=P['grey'])
+            return
         s.different_first_page_header_footer = True
         # trang đầu: tiêu đề thư có logo và thông tin công ty
         h = s.first_page_header; h.is_linked_to_previous = False
         t = h.add_table(1, 2, Mm(TEXT_W)); _borders(t._tbl.tblPr, 'w:tblBorders', {'top': None, 'left': None, 'right': None, 'insideH': None, 'insideV': None, 'bottom': (12, P['green'])}); _widths(t, [45, TEXT_W - 45], pad=False)
         c0, c1 = t.rows[0].cells; c0.paragraphs[0].add_run().add_picture(LOGO, width=Mm(34))
-        items = list(CONFIG['company'].items()); p = c1.paragraphs[0]; p.alignment = WD_ALIGN_PARAGRAPH.RIGHT; p.paragraph_format.space_after = Pt(0)
+        p = c1.paragraphs[0]; p.alignment = WD_ALIGN_PARAGRAPH.RIGHT; p.paragraph_format.space_after = Pt(0)
         _font(p.add_run(items[0][1]), HEAD_FONT, 10, bold=True, color=P['green'])
         for k, v in items[1:]:
             q = c1.add_paragraph(); q.alignment = WD_ALIGN_PARAGRAPH.RIGHT; q.paragraph_format.space_after = Pt(0); q.paragraph_format.line_spacing = 1.1
