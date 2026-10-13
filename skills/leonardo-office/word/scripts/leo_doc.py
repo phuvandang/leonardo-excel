@@ -1,6 +1,6 @@
 """Bộ chuẩn trình bày văn bản Word của Leonardo: lề, phông, hệ tiêu đề, bảng, đầu trang/chân trang, khối ký.
 
-Dùng chung bảng màu, logo và thông tin công ty với skill leonardo-excel. Mọi hằng số trình bày nằm ở đây.
+Dùng chung bảng màu, logo và thông tin công ty với phần Excel (thư mục excel/ đặt cạnh). Mọi hằng số trình bày nằm ở đây.
 """
 import json, os
 from docx import Document
@@ -17,11 +17,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def _shared(name):
-    """Tìm file dùng chung: trong chính skill này trước, rồi tới skill leonardo-excel đặt cạnh."""
-    for base in (ROOT, os.path.join(os.path.dirname(ROOT), 'leonardo-excel')):
+    """Tìm file dùng chung (config.json, logo): trong thư mục word/ trước, rồi tới thư mục excel/ đặt cạnh."""
+    for base in (ROOT, os.path.join(os.path.dirname(ROOT), 'excel')):
         p = os.path.join(base, name)
         if os.path.exists(p): return p
-    raise FileNotFoundError(f'Không tìm thấy {name}: cần cài cùng skill leonardo-excel (bash install.sh)')
+    raise FileNotFoundError(f'Không tìm thấy {name}: thiếu thư mục excel/ của skill leonardo-office (chạy lại bash install.sh)')
 
 
 CONFIG = json.load(open(_shared('config.json'), encoding='utf-8'))

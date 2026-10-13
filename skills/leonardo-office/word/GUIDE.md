@@ -1,13 +1,10 @@
----
-name: leonardo-word
-description: Bộ chuẩn trình bày văn bản Word của Leonardo (lề, phông chữ, hệ tiêu đề đánh số, kiểu bảng, đầu trang có logo, chân trang có số trang, bảng kiểm soát tài liệu, khối ký). Dùng skill này mỗi khi soạn một file Word (.docx) cho Leonardo — quy chế, quy trình, báo cáo, tờ trình, biên bản, thông báo, thư gửi đối tác, tài liệu hướng dẫn — và khi người dùng nói "theo chuẩn Leonardo", "theo mẫu công ty", "làm file Word", "soạn văn bản", "xuất ra docx", kể cả khi không nhắc tên skill. Dùng chung bảng màu, logo, thông tin công ty và quy tắc chữ với skill leonardo-excel.
----
+# Hướng dẫn phần Word
 
-# Chuẩn trình bày văn bản Word của Leonardo
+File này là một phần của skill `leonardo-office`. Mọi đường dẫn `scripts/`, `STYLE.md`, `examples/` bên dưới tính từ thư mục `word/` chứa file này.
 
 Bộ chuẩn bằng chữ nằm ở `STYLE.md` (kèm căn cứ tham khảo). Đọc file đó khi người dùng hỏi về chuẩn hoặc khi cần bố cục mà script chưa hỗ trợ.
 
-Python: `~/.local/share/leonardo-excel-venv/bin/python` (gọi tắt `$PY`, có sẵn python-docx). Luôn chạy với `-I`.
+Python: `~/.local/share/leonardo-office-venv/bin/python` (gọi tắt `$PY`, có sẵn python-docx). Luôn chạy với `-I`.
 
 ## Tạo văn bản mới
 

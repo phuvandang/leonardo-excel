@@ -1,14 +1,16 @@
-# leonardo-excel — chuẩn trình bày Excel và Word của Leonardo cho Claude Code
+# leonardo-office — chuẩn trình bày Excel và Word của Leonardo cho Claude Code
 
-Skill giúp Claude tạo và trình bày lại file Excel theo một chuẩn duy nhất của Leonardo: màu xanh rừng, logo, khối thông tin công ty, bố cục STT / Nội dung / Mã chỉ tiêu, quy tắc chữ và định dạng số.
+Skill `leonardo-office` giúp Claude tạo và trình bày lại file Excel và file Word theo một chuẩn duy nhất của Leonardo: màu xanh rừng, logo, khối thông tin công ty, phông Tahoma, quy tắc chữ và định dạng số.
+
+Trước đây gói này có tên `leonardo-excel` và gồm hai skill `leonardo-excel`, `leonardo-word`. Nay gộp thành một skill; chạy lại `bash install.sh` là bản cũ được chuyển đi.
 
 ## Cài đặt
 
 Cần: macOS, Claude Code, python3.
 
 ```bash
-git clone https://github.com/phuvandang/leonardo-excel.git leonardo-excel-package
-cd leonardo-excel-package
+git clone https://github.com/phuvandang/leonardo-office.git
+cd leonardo-office
 bash install.sh
 ```
 
@@ -22,7 +24,7 @@ Mở Claude Code và nói bằng lời thường, ví dụ:
 - "Trình bày lại file `~/Downloads/bao-cao-thang-10.xlsx` theo chuẩn Leonardo, giữ nguyên số liệu."
 - "Soát lỗi chính tả, viết tắt và trình bày của file này theo chuẩn Leonardo."
 
-Claude sẽ tự chọn trong ba luồng:
+Với file Excel, Claude sẽ tự chọn trong ba luồng:
 
 | Luồng | Khi nào | Kết quả |
 |---|---|---|
@@ -32,9 +34,9 @@ Claude sẽ tự chọn trong ba luồng:
 
 ## Văn bản Word
 
-Gói này cài thêm skill `leonardo-word`: soạn file Word theo cùng bộ nhận diện (màu, logo, thông tin công ty, quy tắc chữ). Nói với Claude, ví dụ: "Soạn quy trình thanh toán thành file Word theo chuẩn Leonardo".
+Cùng skill này soạn file Word theo cùng bộ nhận diện (màu, logo, thông tin công ty, quy tắc chữ). Nói với Claude, ví dụ: "Soạn quy trình thanh toán thành file Word theo chuẩn Leonardo".
 
-Mỗi văn bản có: đầu trang có logo, tên văn bản, bảng nhận diện tài liệu, tiêu đề ba cấp do Word tự đánh số, bảng số liệu và bảng thông tin, khối ký, chân trang có số trang. Văn bản dài có thêm trang bìa và mục lục. Bộ chuẩn và căn cứ tham khảo nằm ở `skills/leonardo-word/STYLE.md`; văn bản minh hoạ tạo từ `skills/leonardo-word/examples/tieu-chuan.json`.
+Mỗi văn bản có: đầu trang có logo, tên văn bản, bảng nhận diện tài liệu, tiêu đề ba cấp do Word tự đánh số, bảng số liệu và bảng thông tin, khối ký, chân trang có số trang. Văn bản dài có thêm trang bìa và mục lục. Bộ chuẩn và căn cứ tham khảo nằm ở `skills/leonardo-office/word/STYLE.md`; văn bản minh hoạ tạo từ `skills/leonardo-office/word/examples/tieu-chuan.json`.
 
 Hỗ trợ tạo văn bản mới và trình bày lại file Word có sẵn (chép nguyên văn chữ và số, tự so trước và sau). Soát chữ trong file Word chưa có lệnh riêng.
 
@@ -47,13 +49,16 @@ Hỗ trợ tạo văn bản mới và trình bày lại file Word có sẵn (ch�
 
 ## Đổi thông tin công ty
 
-Sửa `~/.claude/skills/leonardo-excel/config.json` (tên công ty, mã số thuế, địa chỉ, đơn vị mặc định, logo). Người lập và người duyệt không có giá trị mặc định: Claude sẽ hỏi khi file gốc không ghi. Muốn đổi cho cả team thì sửa `skills/leonardo-excel/config.json` trong kho rồi mọi người cài lại.
+Sửa `~/.claude/skills/leonardo-office/excel/config.json` (tên công ty, mã số thuế, địa chỉ, đơn vị mặc định, logo). Người lập và người duyệt không có giá trị mặc định: Claude sẽ hỏi khi file gốc không ghi. Muốn đổi cho cả team thì sửa `skills/leonardo-office/excel/config.json` trong kho rồi mọi người cài lại.
 
 ## Cấu trúc
 
 ```
-skills/leonardo-excel/
-  SKILL.md        hướng dẫn cho Claude: hai luồng việc, ràng buộc cứng
+skills/leonardo-office/
+  SKILL.md          điểm vào: chọn phần Excel hay Word, ràng buộc chung
+  word/             GUIDE.md, STYLE.md, scripts/ (leo_doc.py, new_doc.py, restyle_doc.py, check_docx.py), examples/
+  excel/
+  GUIDE.md        hướng dẫn cho Claude: ba luồng việc, ràng buộc cứng
   STYLE.md        bộ chuẩn bằng chữ: màu, phông, bố cục, quy tắc chữ và số
   config.json     thông tin công ty
   rules.json      bảng quy tắc soát chữ: lỗi gõ, tên riêng, chữ tắt (team bổ sung dần)
@@ -72,4 +77,4 @@ skills/leonardo-excel/
 
 ## Bổ sung quy tắc soát chữ
 
-Gặp lỗi gõ, tên riêng hoặc chữ tắt mới: thêm vào `skills/leonardo-excel/rules.json`, commit, đẩy lên; mọi người `git pull && bash install.sh`. Chữ tắt chỉ đưa vào bảng khi nó có một nghĩa duy nhất trong tài liệu của Leonardo.
+Gặp lỗi gõ, tên riêng hoặc chữ tắt mới: thêm vào `skills/leonardo-office/excel/rules.json`, commit, đẩy lên; mọi người `git pull && bash install.sh`. Chữ tắt chỉ đưa vào bảng khi nó có một nghĩa duy nhất trong tài liệu của Leonardo.

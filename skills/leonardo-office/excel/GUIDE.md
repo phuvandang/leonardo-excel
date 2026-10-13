@@ -1,9 +1,6 @@
----
-name: leonardo-excel
-description: Bộ chuẩn trình bày file Excel của Leonardo (màu xanh rừng, logo, khối thông tin công ty, bố cục STT / Nội dung / Mã chỉ tiêu, quy tắc chữ và định dạng số). Dùng skill này mỗi khi tạo một file Excel mới cho Leonardo (báo cáo, bảng tổng hợp, bảng theo dõi, kế hoạch, bảng tính gửi sếp hoặc gửi đối tác), và mỗi khi được yêu cầu "trình bày lại", "làm đẹp", "áp theme", "đổi màu", "chuẩn hoá", "theo mẫu tháng 9", "theo chuẩn Leonardo", "theo mẫu DCDS" cho một file Excel có sẵn — kể cả khi người dùng không nhắc tên skill. Cũng dùng khi người dùng đưa file báo cáo quản trị hằng tháng của kế toán và muốn bản trình bày chuyên nghiệp mà số liệu giữ nguyên tuyệt đối.
----
+# Hướng dẫn phần Excel
 
-# Chuẩn trình bày Excel của Leonardo
+File này là một phần của skill `leonardo-office`. Mọi đường dẫn `scripts/`, `STYLE.md`, `examples/` bên dưới tính từ thư mục `excel/` chứa file này.
 
 Skill có ba luồng việc. Chọn luồng trước khi làm:
 
@@ -17,7 +14,7 @@ Sau luồng 1 hoặc 2, chạy tiếp luồng 3 trên file kết quả trước 
 
 Bộ chuẩn bằng chữ (màu, phông, bố cục, quy tắc chữ) nằm ở `STYLE.md`. Đọc file đó khi cần tự viết mã thay vì dùng script, hoặc khi người dùng hỏi về chuẩn.
 
-Python của skill: `~/.local/share/leonardo-excel-venv/bin/python` (do `install.sh` tạo, có sẵn openpyxl và pillow). Gọi tắt là `$PY` bên dưới; thư mục script là `scripts/` cạnh file này. Luôn chạy với `-I`, và chép file của người dùng vào một thư mục tạm riêng trước khi xử lý.
+Python của skill: `~/.local/share/leonardo-office-venv/bin/python` (do `install.sh` tạo, có sẵn openpyxl và pillow). Gọi tắt là `$PY` bên dưới; thư mục script là `scripts/` cạnh file này. Luôn chạy với `-I`, và chép file của người dùng vào một thư mục tạm riêng trước khi xử lý.
 
 ## Luồng 1 — Tạo mới
 

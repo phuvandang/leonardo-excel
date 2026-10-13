@@ -85,7 +85,7 @@ Dùng cho các bên của hợp đồng, thông tin đối tác, nhận diện t
 
 ## Chữ và số
 
-Theo `STYLE.md` của skill leonardo-excel: tiêu đề cấp 1 in hoa, các cấp khác chỉ hoa chữ đầu; dấu thanh kiểu cũ; tháng hai chữ số; tên riêng viết đúng; dấu chấm ngăn nghìn, dấu phẩy thập phân, số âm trong ngoặc. Riêng với văn bản: chữ tắt viết đầy đủ ở lần đầu kèm chữ tắt trong ngoặc; nhấn mạnh bằng chữ đậm, không gạch chân, không in hoa cả câu.
+Theo `excel/STYLE.md`: tiêu đề cấp 1 in hoa, các cấp khác chỉ hoa chữ đầu; dấu thanh kiểu cũ; tháng hai chữ số; tên riêng viết đúng; dấu chấm ngăn nghìn, dấu phẩy thập phân, số âm trong ngoặc. Riêng với văn bản: chữ tắt viết đầy đủ ở lần đầu kèm chữ tắt trong ngoặc; nhấn mạnh bằng chữ đậm, không gạch chân, không in hoa cả câu.
 
 ## Tên file
 
