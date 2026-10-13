@@ -75,7 +75,7 @@ Mỗi điều dưới đây đến từ một sự cố thật; đừng bỏ qua
 - **Luồng 3 không được đổi số, công thức, định dạng số, màu, độ rộng cột hay bố cục;** cũng không sửa chữ trong sheet dữ liệu thô.
 - **Không chạy lại một bước vá lên file đã vá.** Muốn làm lại thì bắt đầu từ file gốc. Vá chồng từng tạo ra khai báo trùng trong biểu đồ khiến Excel không mở được file.
 - **Không đổi số, không làm tròn số nguồn, không đổi đơn vị.** Nếu bản gốc tính theo đồng thì bản trình bày ghi "Đơn vị: đồng".
-- **Không tự điền thông tin không có nguồn** (ngày lập báo cáo, người ký): để trống và nói rõ.
+- **Không tự điền thông tin không có nguồn** (người lập, người duyệt, người ký, ngày lập báo cáo, kỳ báo cáo). Nếu file gốc hoặc yêu cầu không ghi rõ ai lập và ai duyệt thì **hỏi lại người dùng trước khi giao file**; không suy ra từ chức danh thông thường ("Kế toán trưởng", "Giám đốc"), tên file hay người đang trò chuyện. Chưa có câu trả lời thì để trống dòng đó và nói rõ trong báo cáo. Khi đã biết, truyền qua `--signers "Người lập / Người duyệt"` (trình bày lại) hoặc `"signers"` trong JSON (tạo mới).
 - **Dữ liệu tài chính và lương là mật:** không gửi nội dung file ra dịch vụ bên ngoài.
 - **Nói thật về việc kiểm tra:** script không mở được Excel. Trong báo cáo cuối phải nêu sheet nào đã xem bằng ảnh, sheet nào chưa, và nhắc người dùng mở thử bằng Excel. Nếu file đang mở trong Excel (có file `~$…` bên cạnh) thì nhắc họ đóng không lưu rồi mở lại.
 

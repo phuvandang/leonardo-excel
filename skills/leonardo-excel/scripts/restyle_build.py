@@ -20,6 +20,7 @@ ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDe
 ap.add_argument('src'); ap.add_argument('out')
 ap.add_argument('--sheet', action='append', required=True, help='"Tên sheet nguồn::Tên sheet mới::Tiêu đề::Dòng phụ" (lặp lại cho từng sheet)')
 ap.add_argument('--unit'); ap.add_argument('--period'); ap.add_argument('--report-date')
+ap.add_argument('--signers', help='"Người lập / Người duyệt" — chỉ truyền khi file gốc ghi rõ hoặc người dùng đã cho biết; không truyền thì để trống')
 ap.add_argument('--label-width', type=float, default=44); ap.add_argument('--value-width', type=float, default=18.5)
 ap.add_argument('--no-info', action='store_true', help='bỏ khối thông tin công ty')
 ap.add_argument('--label-col', help='chữ cột nguồn dùng làm cột nội dung (mặc định: tự nhận). Ví dụ C cho cột Họ tên')
@@ -158,7 +159,7 @@ for k, spec in enumerate(A.sheet, 1):
     assert sname in S.sheetnames, f'Không có sheet nguồn: {sname}'; assert new not in S.sheetnames, f'Tên sheet mới trùng sheet có sẵn: {new}'
     rows = load(sname); regs = regions(rows)
     nv = [len([c for c in cols if c > label_col(rows, cols)]) for cols in regs]
-    sh = Sheet(wb, new, title, [7, A.label_width, 11] + [A.value_width] * max(max(nv), 3), f'{k:02d}', sub, unit=A.unit, period=A.period, report_date=A.report_date, info=not A.no_info)
+    sh = Sheet(wb, new, title, [7, A.label_width, 11] + [A.value_width] * max(max(nv), 3), f'{k:02d}', sub, unit=A.unit, period=A.period, report_date=A.report_date, info=not A.no_info, signers=A.signers)
     sh.sec('A.', title.split('— ')[-1])
     for cols in regs:
         if len(cols) < 2 and not any(isnum(d[cols[0]][0]) for d in rows.values() if cols[0] in d):
@@ -170,5 +171,6 @@ wb.save(A.out)
 js = lambda v: v if isinstance(v, (int, float, str, bool)) or v is None else str(v)
 json.dump({k: js(v) for k, v in VAL.items()}, open(A.out + '.values.json', 'w', encoding='utf-8'), ensure_ascii=False)
 meta['skipped'] = skipped; json.dump(meta, open(A.out + '.meta.json', 'w', encoding='utf-8'), ensure_ascii=False)
+if not A.no_info and not A.signers: print('⚠ Dòng "Người lập / Người duyệt" đang để trống: hỏi người dùng, không tự điền.')
 print('Đã dựng:', summary, '| ô liên kết:', len(VAL), '| dòng nguồn không đưa vào:', len(skipped))
 for s in skipped[:30]: print('  BỎ QUA', s[0], 'dòng', s[1], str(s[2])[:140])

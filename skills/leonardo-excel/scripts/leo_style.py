@@ -57,7 +57,7 @@ class Sheet:
     Cột A = STT, B = nội dung, C = mã chỉ tiêu, từ D là cột giá trị.
     """
 
-    def __init__(self, wb, name, title, widths, prefix='', subtitle=None, unit=None, period=None, report_date=None, info=True):
+    def __init__(self, wb, name, title, widths, prefix='', subtitle=None, unit=None, period=None, report_date=None, info=True, signers=None):
         self.ws = ws = wb.create_sheet(name); self.name = name; self.n = len(widths); self.last = CL(self.n)
         self.prefix = prefix; self.code = 0; self.widths = widths; self.nsec = 0; self.links = {}
         ws.sheet_view.showGridLines = False
@@ -70,7 +70,7 @@ class Sheet:
             img = Image(LOGO); img.width, img.height = 113, 58; ws.add_image(img, 'A1')
         self.r = 5
         if info:
-            rows = list(CONFIG['company'].items()) + [('Kỳ báo cáo:', period), ('Ngày lập báo cáo:', report_date), ('Người lập / Người duyệt:', CONFIG['signers'])]
+            rows = list(CONFIG['company'].items()) + [('Kỳ báo cáo:', period), ('Ngày lập báo cáo:', report_date), ('Người lập / Người duyệt:', signers)]      # signers: chỉ điền khi file gốc ghi rõ hoặc người dùng cho biết; không có thì để trống
             for i, (a, b) in enumerate(rows, start=4):
                 ws.merge_cells(f'A{i}:B{i}'); ws.merge_cells(f'C{i}:{L}{i}'); self.put(f'A{i}', a); self.put(f'C{i}', b); ws.row_dimensions[i].height = 17
             self.r = 4 + len(rows) + 1

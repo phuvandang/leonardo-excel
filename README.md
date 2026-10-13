@@ -47,7 +47,7 @@ Hỗ trợ tạo văn bản mới và trình bày lại file Word có sẵn (ch�
 
 ## Đổi thông tin công ty
 
-Sửa `~/.claude/skills/leonardo-excel/config.json` (tên công ty, mã số thuế, địa chỉ, người ký, đơn vị mặc định, logo). Muốn đổi cho cả team thì sửa `skills/leonardo-excel/config.json` trong kho rồi mọi người cài lại.
+Sửa `~/.claude/skills/leonardo-excel/config.json` (tên công ty, mã số thuế, địa chỉ, đơn vị mặc định, logo). Người lập và người duyệt không có giá trị mặc định: Claude sẽ hỏi khi file gốc không ghi. Muốn đổi cho cả team thì sửa `skills/leonardo-excel/config.json` trong kho rồi mọi người cài lại.
 
 ## Cấu trúc
 

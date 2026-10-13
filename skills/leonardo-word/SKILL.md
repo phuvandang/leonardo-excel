@@ -11,7 +11,7 @@ Python: `~/.local/share/leonardo-excel-venv/bin/python` (gọi tắt `$PY`, có 
 
 ## Tạo văn bản mới
 
-1. Xác định: loại văn bản (quy chế, quy trình, báo cáo, tờ trình, biên bản…), tên, mã tài liệu nếu có, người soạn và người duyệt. Thông tin nào người dùng không cho thì để trống trong bảng kiểm soát, không tự điền.
+1. Xác định: loại văn bản (quy chế, quy trình, báo cáo, tờ trình, biên bản…), tên, mã tài liệu nếu có, người soạn và người duyệt. Nếu không xác định được người soạn, người duyệt hay người ký từ yêu cầu hoặc từ văn bản gốc thì hỏi lại người dùng; chưa có câu trả lời thì để trống, không tự điền.
 2. Viết nội dung theo quy tắc chữ trong `STYLE.md`: kết luận trước, câu ngắn, viết đầy đủ chữ tắt ở lần đầu, không bịa số liệu.
 3. Viết bản mô tả JSON theo mẫu `examples/tieu-chuan.json` (cấu trúc ở đầu `scripts/new_doc.py`).
    - Tối đa ba cấp tiêu đề; **không gõ số** vào tiêu đề và vào danh sách `numbered`: Word tự đánh 1. / 1.1 / 1.1.1 và (a) / (i).
@@ -43,7 +43,7 @@ Cách script nhận diện: các dòng in hoa canh giữa ở đầu là tên v�
 ## Ràng buộc cứng
 
 - **Không ghi đè file của người dùng**; luôn ra file mới.
-- **Không tự điền** người ký, ngày hiệu lực, số hiệu văn bản khi không có nguồn.
+- **Không tự điền** người soạn, người duyệt, người ký, ngày hiệu lực, số hiệu văn bản khi không có nguồn: hỏi lại người dùng; không suy ra từ chức danh thông thường hay từ người đang trò chuyện.
 - **Không mở-lưu lại một file Word có sẵn bằng python-docx để "làm đẹp"** nếu chưa so chữ trước và sau bằng `check_docx.py ket-qua.docx goc.docx`: thao tác đó có thể làm mất ghi chú, theo dõi thay đổi, mục lục tự động.
 - **Nói thật về việc kiểm tra:** script không mở được Word. Ảnh Quick Look chỉ cho thấy trang đầu, không hiện đúng độ rộng và độ lùi của bảng, các đường kẻ đoạn (kể cả đường kẻ trên tiêu đề cấp 1), ngắt trang, đầu trang các trang sau và số trang. Báo rõ phần nào đã xem, phần nào chưa, và nhắc người dùng mở bằng Word.
 - **Văn bản pháp lý gửi cơ quan nhà nước** có thể thức riêng theo Nghị định 30/2020/NĐ-CP; chuẩn này dành cho văn bản nội bộ và văn bản gửi đối tác. Gặp trường hợp đó thì nói rõ với người dùng trước khi làm.

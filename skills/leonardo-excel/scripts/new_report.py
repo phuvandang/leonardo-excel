@@ -1,7 +1,7 @@
 """Luồng "tạo mới": dựng file Excel theo chuẩn Leonardo từ một bản mô tả JSON. Cách dùng: python new_report.py mo-ta.json ket-qua.xlsx
 
 Bản mô tả (xem examples/vi-du.json):
-  { "period": "...", "report_date": "...", "unit": "đồng", "info": true,
+  { "period": "...", "report_date": "...", "signers": "Họ tên người lập / Họ tên người duyệt (bỏ trống nếu chưa biết)", "unit": "đồng", "info": true,
     "sheets": [ { "name": "01 Doanh thu", "title": "BÁO CÁO … — …", "subtitle": "Tháng 10 năm 2026",
                   "label_width": 40, "value_width": 16,
                   "blocks": [ { "title": "Doanh thu theo kênh", "columns": ["Kênh", "Tháng 09", "Tháng 10", "Chênh lệch"],
@@ -30,7 +30,7 @@ def build(ids_in):
         assert len(s['name']) <= 31 and not re.search(r'[\[\]:*?/\\]', s['name']), f"Tên sheet không hợp lệ: {s['name']}"
         ncol = max(len(b['columns']) - 1 for b in s['blocks'])
         sh = Sheet(wb, s['name'], s['title'], [7, s.get('label_width', 44), 11] + [s.get('value_width', 16)] * max(ncol, 3), f'{k:02d}', s.get('subtitle'),
-                   unit=s.get('unit', spec.get('unit')), period=spec.get('period'), report_date=spec.get('report_date'), info=spec.get('info', True))
+                   unit=s.get('unit', spec.get('unit')), period=spec.get('period'), report_date=spec.get('report_date'), info=spec.get('info', True), signers=spec.get('signers'))
         ids = ids_in.get(s['name'], {}); mine = ids_out.setdefault(s['name'], {})
         sh.sec('A.', s['title'].split('— ')[-1].upper())
         for b in s['blocks']:
