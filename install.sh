@@ -15,7 +15,8 @@ ok "python3: $(python3 --version)"
 
 mkdir -p "$HOME/.claude/skills"
 if [[ -d "$DEST" ]]; then
-  BAK="$DEST.cu-$(date +%Y%m%d-%H%M%S)"
+  mkdir -p "$HOME/.claude/skills-backup"
+  BAK="$HOME/.claude/skills-backup/leonardo-excel.cu-$(date +%Y%m%d-%H%M%S)"   # để ngoài thư mục skills, tránh bị nạp thành skill trùng
   mv "$DEST" "$BAK"
   ok "Bản cũ được giữ lại tại: $BAK (anh/chị tự xoá khi không cần)"
 fi
