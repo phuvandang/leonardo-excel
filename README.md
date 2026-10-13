@@ -34,7 +34,7 @@ Claude sẽ tự chọn trong ba luồng:
 
 Gói này cài thêm skill `leonardo-word`: soạn file Word theo cùng bộ nhận diện (màu, logo, thông tin công ty, quy tắc chữ). Nói với Claude, ví dụ: "Soạn quy trình thanh toán thành file Word theo chuẩn Leonardo".
 
-Mỗi văn bản có: đầu trang có logo, tên văn bản, bảng kiểm soát tài liệu, tiêu đề đánh số ba cấp, một kiểu bảng duy nhất, khối ký, chân trang có số trang. Bộ chuẩn và căn cứ tham khảo nằm ở `skills/leonardo-word/STYLE.md`; văn bản minh hoạ tạo từ `skills/leonardo-word/examples/tieu-chuan.json`.
+Mỗi văn bản có: đầu trang có logo, tên văn bản, bảng nhận diện tài liệu, tiêu đề ba cấp do Word tự đánh số, bảng số liệu và bảng thông tin, khối ký, chân trang có số trang. Văn bản dài có thêm trang bìa và mục lục. Bộ chuẩn và căn cứ tham khảo nằm ở `skills/leonardo-word/STYLE.md`; văn bản minh hoạ tạo từ `skills/leonardo-word/examples/tieu-chuan.json`.
 
 Hỗ trợ tạo văn bản mới và trình bày lại file Word có sẵn (chép nguyên văn chữ và số, tự so trước và sau). Soát chữ trong file Word chưa có lệnh riêng.
 

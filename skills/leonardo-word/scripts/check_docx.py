@@ -24,6 +24,9 @@ for n in [p for p in z.namelist() if re.match(r'word/(document|header\d*|footer\
             if idx != sorted(idx) or len(set(kids)) != len(kids):
                 nbad += 1
                 if nbad <= 5: fail.append(f'{n}: <w:{tag}> sai thứ tự hoặc trùng phần tử con: {kids}')
+if 'word/numbering.xml' in z.namelist():              # mọi abstractNum phải đứng trước num
+    kinds = re.findall(r'<w:(abstractNum|num) ', z.read('word/numbering.xml').decode())
+    if 'abstractNum' in kinds[kinds.index('num'):] if 'num' in kinds else False: nbad += 1; fail.append('numbering.xml: abstractNum đứng sau num')
 doc = z.read('word/document.xml').decode()
 text_of = lambda xml: [''.join(re.findall(r'<w:t[^>]*>([^<]*)</w:t>', p)) for p in re.findall(r'<w:p[ >].*?</w:p>', xml, re.S)]
 paras = [t for t in text_of(doc) if t.strip()]

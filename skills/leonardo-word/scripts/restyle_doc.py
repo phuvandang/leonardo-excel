@@ -17,7 +17,7 @@ from docx.oxml.ns import qn
 from docx.shared import Mm, Pt
 from docx.table import Table
 from docx.text.paragraph import Paragraph
-from leo_doc import Doc, _font, _borders, _widths, _no_borders, _shade, P, BODY_FONT, HEAD_FONT, BODY_PT, TABLE_PT, TEXT_W
+from leo_doc import Doc, no_number, _font, _borders, _widths, _no_borders, _shade, P, BODY_FONT, HEAD_FONT, BODY_PT, TABLE_PT, TEXT_W
 
 args = [a for a in sys.argv[1:] if not a.startswith('--')]; src, out = args[0], args[1]
 LETTER = '--letterhead' in sys.argv
@@ -196,7 +196,7 @@ for i, (tag, el) in enumerate(elements):
         copy_runs(sp, dp, HEAD_FONT, 16 if big else 11, force_bold=True, upper=True, color=P['green'] if big else P['grey']); continue
     typed = re.match(r'^(\d{1,2})\.\s+\S', text)
     if (kind == 'decimal' and re.fullmatch(r'\d+\.', label or '')) or (typed and len(text) < 140 and not text.rstrip().endswith((';', ','))):
-        h = d.add_heading('', level=1); copy_runs(sp, h, HEAD_FONT, 13, force_bold=True, upper=True, prefix=label, color=P['green']); stats['tiêu_đề'] += 1; continue
+        h = d.add_heading('', level=1); no_number(h); copy_runs(sp, h, HEAD_FONT, 12, force_bold=True, upper=True, prefix=label); stats['tiêu_đề'] += 1; continue
     dp = d.add_paragraph()
     dp.alignment = WD_ALIGN_PARAGRAPH.CENTER if (sp.alignment == WD_ALIGN_PARAGRAPH.CENTER or (has_img and not text)) else (WD_ALIGN_PARAGRAPH.RIGHT if sp.alignment == WD_ALIGN_PARAGRAPH.RIGHT else WD_ALIGN_PARAGRAPH.JUSTIFY)
     if kind == 'bullet' or re.match(r'^[-–•]\s', text):
