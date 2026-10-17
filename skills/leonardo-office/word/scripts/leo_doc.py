@@ -25,7 +25,9 @@ def _shared(name):
 
 
 CONFIG = json.load(open(_shared('config.json'), encoding='utf-8'))
-LOGO = _shared(CONFIG['logo'])
+LOGO = _shared(CONFIG['logo'])                                                                      # logo gốc nguyên bộ (hươu trên, chữ dưới): chỉ dùng ở trang đầu
+COMPANY = CONFIG.get('company_word', CONFIG['company'])                                            # đầu trang, chân trang Word: tên tiếng Anh + mã số thuế, không ghi địa chỉ
+WORDMARK = _shared(CONFIG['logo_wordmark'])                                                         # chỉ chữ LEONARDO: đầu trang các trang sau. Không ghép lại hươu và chữ theo cách khác logo gốc
 P = dict(green='2F5D4A', soft='EEF3EF', grid='4A5A52', bad='8F2F1D', inp='FBF5E0', grey='6B6B6B')   # cùng bảng màu F0 với Excel
 BODY_FONT = HEAD_FONT = 'Tahoma'                                                                    # một phông cho cả văn bản, cùng phông với Excel
 BODY_PT, TABLE_PT, SMALL_PT = 10.5, 9.5, 8
@@ -223,35 +225,37 @@ class Doc:
         if kind == 'empty': return
         _para_border(fp, 'top', 4, P['grid'], space=6); g = dict(name=HEAD_FONT, size=SMALL_PT, color=P['grey'])
         if self.letterhead and kind != 'roman':
-            fp.paragraph_format.tab_stops.add_tab_stop(Mm(TEXT_W), WD_TAB_ALIGNMENT.RIGHT); _font(fp.add_run(list(CONFIG['company'].values())[0] + '\t'), **g)
+            fp.paragraph_format.tab_stops.add_tab_stop(Mm(TEXT_W), WD_TAB_ALIGNMENT.RIGHT); _font(fp.add_run(list(COMPANY.values())[0] + '\t'), **g)
         else: fp.alignment = WD_ALIGN_PARAGRAPH.RIGHT
         if kind == 'roman': _field(fp, 'PAGE', **g); return
         _font(fp.add_run('Trang '), **g); _field(fp, 'PAGE', **g); _font(fp.add_run(' / '), **g); _field(fp, 'NUMPAGES' if kind == 'full' else 'SECTIONPAGES', **g)
 
     def _header_footer(self, s, title, code):
-        items = list(CONFIG['company'].items())
+        items = list(COMPANY.items())
         if not self.letterhead:                  # không nhận diện Leonardo: chỉ tên văn bản ở đầu trang và số trang ở chân trang
             hp = s.header.paragraphs[0]; hp.alignment = WD_ALIGN_PARAGRAPH.RIGHT; hp.paragraph_format.space_after = Pt(0)
             _font(hp.add_run(' · '.join(x for x in (title, code) if x)), HEAD_FONT, SMALL_PT, color=P['grey']); _para_border(hp, 'bottom', 6, P['green'], space=3)
             self._footer(s.footer, 'full'); return
         s.different_first_page_header_footer = True
-        # trang đầu: tiêu đề thư có logo và thông tin công ty
+        # trang đầu: logo gốc nguyên bộ cao 11 mm (bằng khối ba dòng thông tin bên phải), hai khối canh đáy, vạch xanh mảnh 0,75 pt
         h = s.first_page_header; h.is_linked_to_previous = False
-        t = h.add_table(1, 2, Mm(TEXT_W)); _borders(t._tbl.tblPr, 'w:tblBorders', {'top': None, 'left': None, 'right': None, 'insideH': None, 'insideV': None, 'bottom': (12, P['green'])}); _widths(t, [45, TEXT_W - 45], pad=False)
-        c0, c1 = t.rows[0].cells; c0.paragraphs[0].add_run().add_picture(LOGO, width=Mm(34))
-        p = c1.paragraphs[0]; p.alignment = WD_ALIGN_PARAGRAPH.RIGHT; p.paragraph_format.space_after = Pt(0)
+        t = h.add_table(1, 2, Mm(TEXT_W)); _borders(t._tbl.tblPr, 'w:tblBorders', {'top': None, 'left': None, 'right': None, 'insideH': None, 'insideV': None, 'bottom': (6, P['green'])}); _widths(t, [40, TEXT_W - 40], pad=False)
+        c0, c1 = t.rows[0].cells; c0.vertical_alignment = c1.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.BOTTOM
+        p0 = c0.paragraphs[0]; p0.paragraph_format.space_after = Pt(4); p0.paragraph_format.line_spacing = 1.1; p0.add_run().add_picture(LOGO, height=Mm(11))
+        p = c1.paragraphs[0]; p.alignment = WD_ALIGN_PARAGRAPH.RIGHT; p.paragraph_format.space_after = Pt(0); p.paragraph_format.line_spacing = 1.1
         _font(p.add_run(items[0][1]), HEAD_FONT, 10, bold=True, color=P['green'])
         for k, v in items[1:]:
             q = c1.add_paragraph(); q.alignment = WD_ALIGN_PARAGRAPH.RIGHT; q.paragraph_format.space_after = Pt(0); q.paragraph_format.line_spacing = 1.1
             _font(q.add_run(f'{k} {v}'), HEAD_FONT, SMALL_PT, color=P['grey'])
-        c1.paragraphs[-1].paragraph_format.space_after = Pt(4); h.add_paragraph().paragraph_format.space_after = Pt(0)
-        # các trang sau: logo nhỏ + tên văn bản
+        c1.paragraphs[-1].paragraph_format.space_after = Pt(5); h.add_paragraph().paragraph_format.space_after = Pt(0)
+        # các trang sau: chỉ chữ LEONARDO rộng 30 mm + tên văn bản canh đáy; không kẻ đường (tránh trùng với đường kẻ của tiêu đề cấp 1)
         h2 = s.header; h2.is_linked_to_previous = False
-        t2 = h2.add_table(1, 2, Mm(TEXT_W)); _borders(t2._tbl.tblPr, 'w:tblBorders', {'top': None, 'left': None, 'right': None, 'insideH': None, 'insideV': None, 'bottom': (6, P['green'])}); _widths(t2, [35, TEXT_W - 35], pad=False)
-        a, b = t2.rows[0].cells; a.paragraphs[0].add_run().add_picture(LOGO, width=Mm(20)); b.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.BOTTOM
+        t2 = h2.add_table(1, 2, Mm(TEXT_W)); _no_borders(t2); _widths(t2, [50, TEXT_W - 50], pad=False)
+        a, b = t2.rows[0].cells; a.vertical_alignment = b.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.BOTTOM
+        pa = a.paragraphs[0]; pa.paragraph_format.space_after = Pt(0); pa.add_run().add_picture(WORDMARK, width=Mm(30))
         q = b.paragraphs[0]; q.alignment = WD_ALIGN_PARAGRAPH.RIGHT; q.paragraph_format.space_after = Pt(0)
         _font(q.add_run(' · '.join(x for x in (title, code) if x)), HEAD_FONT, SMALL_PT, color=P['grey'])
-        q.paragraph_format.space_after = Pt(3); h2.add_paragraph().paragraph_format.space_after = Pt(0)
+        h2.add_paragraph().paragraph_format.space_after = Pt(6)
         for f in (s.footer, s.first_page_footer): self._footer(f, 'full')
 
     # ----- trang bìa, mục lục, bắt đầu thân bài (cho văn bản dài)

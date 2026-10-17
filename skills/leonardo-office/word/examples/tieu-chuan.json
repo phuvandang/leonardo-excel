@@ -50,7 +50,7 @@
     {"h2": "Văn bản ngắn"},
     {"p": "Văn bản từ năm trang trở xuống mở đầu ngay ở trang một, theo thứ tự:"},
     {"numbered": [
-      "Đầu trang có logo bên trái; tên công ty, mã số thuế và địa chỉ bên phải; bên dưới là một đường kẻ xanh.",
+      "Đầu trang có logo gốc nguyên bộ bên trái; tên công ty tiếng Anh và mã số thuế bên phải (không ghi địa chỉ); bên dưới là một đường kẻ xanh mảnh.",
       "Loại văn bản (in hoa, xám), tên văn bản (in hoa, xanh rừng) và một dòng mô tả in nghiêng.",
       "Bảng nhận diện tài liệu: mã, phiên bản, ngày hiệu lực, phạm vi, người soạn, người duyệt."
     ]},
@@ -67,7 +67,7 @@
     {"h3": "Cách viết tiêu đề"},
     {"p": "Cấp 1 in hoa toàn bộ. Cấp 2 và cấp 3 chỉ viết hoa chữ đầu và tên riêng. Tiêu đề là một cụm danh từ ngắn, không có dấu chấm cuối."},
     {"h2": "Đầu trang và chân trang"},
-    {"p": "Các trang sau trang đầu dùng đầu trang thu gọn: logo nhỏ bên trái, tên ngắn và mã tài liệu bên phải. Chân trang ghi tên công ty bên trái và số trang bên phải."},
+    {"p": "Các trang sau trang đầu dùng đầu trang thu gọn: chỉ chữ LEONARDO bên trái, tên ngắn và mã tài liệu bên phải, không kẻ đường. Logo chỉ dùng nguyên bộ như bản gốc, hoặc tách riêng một thành tố (hươu hoặc chữ); không ghép hai thành tố theo cách khác. Chân trang ghi tên công ty tiếng Anh bên trái và số trang bên phải."},
 
     {"h1": "Bảng"},
     {"h2": "Bảng số liệu"},

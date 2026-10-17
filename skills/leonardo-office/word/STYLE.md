@@ -50,13 +50,13 @@ Dùng chung với chuẩn Excel: xanh rừng `2F5D4A`, nền nhạt `EEF3EF`, l�
 
 | Phần | Nội dung |
 |---|---|
-| Đầu trang, trang đầu | Logo bên trái; tên công ty, mã số thuế, địa chỉ bên phải; đường kẻ xanh bên dưới |
+| Đầu trang, trang đầu | Logo gốc nguyên bộ (hươu trên, chữ dưới) cao 11 mm bên trái; tên công ty tiếng Anh (LEONARDO COMPANY LIMITED) và Tax Code bên phải, không ghi địa chỉ, hai khối canh đáy; vạch xanh mảnh 0,75 pt bên dưới |
 | Khối tên | Loại văn bản; tên văn bản; một dòng mô tả in nghiêng |
 | Bảng nhận diện tài liệu | Mã, phiên bản, ngày hiệu lực, phạm vi, người soạn, người duyệt; kiểu "nhãn – giá trị", hai cặp cột |
 | Thân văn bản | Tiêu đề đánh số 1. / 1.1 / 1.1.1, tối đa ba cấp; ý liệt kê có thứ tự dùng (a) rồi (i) |
 | Khối ký | Nơi và ngày canh phải; chức danh in hoa đậm; "(Ký, ghi rõ họ tên)"; họ tên |
-| Đầu trang, các trang sau | Logo nhỏ bên trái; tên ngắn và mã tài liệu bên phải |
-| Chân trang | Tên công ty bên trái; "Trang x / y" bên phải |
+| Đầu trang, các trang sau | Chỉ chữ LEONARDO rộng 30 mm bên trái; tên ngắn và mã tài liệu bên phải; không kẻ đường. Quy tắc logo: dùng nguyên bộ logo gốc, hoặc tách chỉ một thành tố (hươu hoặc chữ); không ghép hai thành tố theo cách khác logo gốc |
+| Chân trang | Tên công ty tiếng Anh bên trái; "Trang x / y" bên phải |
 
 **Văn bản dài (trên năm trang)** có thêm phần đầu:
 

@@ -4,6 +4,11 @@
     "Mã số thuế:": "0314465951",
     "Địa chỉ:": "284 Pasteur, Phường Xuân Hòa, Thành phố Hồ Chí Minh"
   },
+  "company_word": {
+    "Tên công ty:": "LEONARDO COMPANY LIMITED",
+    "Tax Code:": "0314465951"
+  },
   "unit": "đồng",
-  "logo": "assets/logo-forest-480.png"
+  "logo": "assets/logo-forest-480.png",
+  "logo_wordmark": "assets/logo-forest-chu-600.png"
 }
